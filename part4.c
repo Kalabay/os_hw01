@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
             exit(-1);
         }
     } else {
-        // считывание из файла
+        // считывание из файла, потом вывод
         if ((fd1[1] = open(argv[1], O_RDONLY)) < 0) {
             printf("Can\'t open for reading\n");
             exit(-1);
