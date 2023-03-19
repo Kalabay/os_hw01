@@ -125,6 +125,7 @@ int main(int argc, char* argv[]) {
             printf("Can\'t open for writting\n");
             exit(-1);
         }
+        len_ans = read(fd2[0], ans, maximum_size);
         size = write(fd2[1], ans, len_ans);
         if (size != len_ans) {
             printf("Can\'t write all string\n");
