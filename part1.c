@@ -109,7 +109,17 @@ int main(int argc, char* argv[]) {
     if (result < 0) {
         printf("Can\'t fork\n");
         exit(-1);
-    } else if (result == 0) {
+    } else if (result > 0) {
+        size = write(fd2[1], ans, len_ans);
+        if (close(fd2[0]) < 0){
+            printf("parent: Can\'t close reading side of pipe\n");
+            exit(-1);
+        }
+        if (close(fd2[1]) < 0) {
+            printf("parent: Can\'t close writing side of pipe\n");
+            exit(-1);
+        }
+    } else {
         // вывод в файл
         if ((fd2[1] = open(argv[2], O_WRONLY | O_CREAT)) < 0) {
             printf("Can\'t open for writting\n");
@@ -120,8 +130,14 @@ int main(int argc, char* argv[]) {
             printf("Can\'t write all string\n");
             exit(-1);
         }
-        close(fd2[0]);
-        close(fd2[1]);
+        if (close(fd2[1]) < 0) {
+            printf("child: Can\'t close writing side of pipe\n");
+            exit(-1);
+        }
+        if (close(fd2[0]) < 0) {
+            printf("child: Can\'t close reading side of pipe\n");
+            exit(-1);
+        }
         exit(0);
     }
     return 0;
