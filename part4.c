@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
     size_t size;
     char str[maximum_size];
 
+    mknod("write", S_IFIFO | 0666, 0);
     mknod("reading", S_IFIFO | 0666, 0);
     result = fork();
     if (result < 0) {
@@ -75,7 +76,6 @@ int main(int argc, char* argv[]) {
         }
         ans[len_ans] = '\0';
         len_ans += 1;
-        mknod("write", S_IFIFO | 0666, 0);
 
         if ((fd2[1] = open("write", O_WRONLY)) < 0) {
             printf("Can\'t open for writting\n");
